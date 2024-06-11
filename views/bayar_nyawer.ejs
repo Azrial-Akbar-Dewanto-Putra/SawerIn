@@ -1,0 +1,261 @@
+<%- include('./template/head') %>
+  <style>
+    #btnCopyIDTransaksi {
+      cursor: pointer;
+    }
+  </style>
+  <%- include('./template/header') %>
+
+    <div class="container">
+      <div class="bayarSaweran">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="title">Bayar Saweran - <%= transaksiNyawerByID[0].nama_user %>
+            </h3>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="fw-bolder">ID Transaksi </span>
+                  </div>
+                  <div class="col-6">
+                    <span class="fst-italic" id="id_transaksi">
+                      <%= transaksiNyawerByID[0].id_transaksi %>
+                    </span> |
+                    <img id="btnCopyIDTransaksi" width="20"
+                      src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png" alt="">
+                  </div>
+                </div>
+              </li>
+
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="fw-bolder">Nominal </span>
+                  </div>
+                  <div class="col-6">
+                    <span class="fst-italic" id="nominal">
+                      <%= transaksiNyawerByID[0].nominal%>
+                    </span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="fw-bolder">Metode Pembayaran </span>
+                  </div>
+                  <div class="col-6">
+                    <span class="fst-italic" id="metode_pembayaran_id">
+                      <%= transaksiNyawerByID[0].nama_mp%>
+                    </span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="fw-bolder">Waktu Transaksi </span>
+                  </div>
+                  <div class="col-6">
+                    <span class="fst-italic" id="waktu_transaksi">
+                      <%= transaksiNyawerByID[0].waktu_transaksi %>
+                    </span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="fw-bolder">Status Transaksi </span>
+                  </div>
+                  <div class="col-6">
+                    <span class="fst-italic" id="status_transaksi">
+                      <%= transaksiNyawerByID[0].status_transaksi %>
+                    </span>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+          <div class="card-footer">
+            <% if(transaksiNyawerByID[0].status_transaksi=="Pending - Menunggu Pembayaran" ) { %>
+              <button class="btn btn-primary" id="btnCekTransaksi" style="float: right;">Bayar
+                Sekarang</button>
+              <% } else{ %>
+                <button class="btn btn-info text-white" id="btnCekTransaksi" style="float: right;">Cek
+                  Transaksi</button>
+                <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <%- include('./template/js') %>
+
+      <script>
+        $(document).ready(function () {
+
+          const getIDTransaksiFromURL = () => {
+            var arrURL = document.URL.split('/');
+
+            return arrURL[4].replace("#", "")
+          }
+
+          const btnCekTransaksi = $('#btnCekTransaksi')
+          btnCekTransaksi.on("click", function () {
+            const dataNyawer = {
+              id_transaksi: getIDTransaksiFromURL()
+            }
+            axios({
+              method: 'post', url: '/cekTransaksiNyawer', data: {
+                dataNyawer
+              }
+            }).then((responseDataNyawer) => {
+              if (responseDataNyawer.data.statusNyawer == "Pending - Menunggu Pembayaran") {
+                if (responseDataNyawer.data.transaksiNyawerByID.status_transaksi == "Pending - Menunggu Pembayaran") {
+                  let timerInterval
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Pending - Menunggu Pembayaran',
+                    text: 'Silahkan lanjutkan Pembayaran, Anda akan dialihkan.',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    showConfirmButton: true,
+                    didOpen: () => {
+                      Swal.showLoading()
+                    },
+                    willClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                      window.location.href = responseDataNyawer.data.transaksiNyawerByID.link_bayar
+                    }
+                  })
+                }
+              }
+              else if (responseDataNyawer.data.statusNyawer == "Sukses") {
+                let timerInterval
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Sukses',
+                  text: 'Transaksi Nyawer ini telah Sukses.',
+                  timer: 1500,
+                  timerProgressBar: true,
+                  showConfirmButton: true,
+                  didOpen: () => {
+                    Swal.showLoading()
+                  },
+                  willClose: () => {
+                    clearInterval(timerInterval)
+                  }
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    location.reload()
+                  }
+                })
+              }
+
+              else if (responseDataNyawer.data.statusNyawer == "Transaksi tidak Ditemukan") {
+                Swal.fire('Oops..', 'Maaf, Transaksi Nyawer ini tidak Ditemukan.', 'info');
+                let timerInterval
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Oops..',
+                  text: 'Maaf, Transaksi Nyawer ini tidak Ditemukan.',
+                  timer: 1500,
+                  timerProgressBar: true,
+                  showConfirmButton: true,
+                  didOpen: () => {
+                    Swal.showLoading()
+                  },
+                  willClose: () => {
+                    clearInterval(timerInterval)
+                  }
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    location.reload()
+                  }
+                })
+              }
+              else {
+                let timerInterval
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Oops..',
+                  text: 'Maaf, Transaksi Nyawer ini telah ' + responseDataNyawer.data.statusNyawer + '.',
+                  timer: 1500,
+                  timerProgressBar: true,
+                  showConfirmButton: true,
+                  didOpen: () => {
+                    Swal.showLoading()
+                  },
+                  willClose: () => {
+                    clearInterval(timerInterval)
+                  }
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    location.reload()
+                  }
+                })
+              }
+            }).catch((err) => {
+              alert('error ' + err)
+            });
+          })
+
+          const bgStatus = () => {
+            const status_transaksi = $("#status_transaksi").text().trim()
+            if (status_transaksi == "Pending - Menunggu Pembayaran" || status_transaksi == "Pending - Menunggu Konfirmasi Admin") {
+              $("#status_transaksi").addClass("badge rounded-pill text-bg-warning")
+            }
+            else if (status_transaksi == "Sukses") {
+              $("#status_transaksi").addClass("badge rounded-pill text-bg-success")
+            }
+            else if (status_transaksi == "Gagal - Dibatalkan System" || status_transaksi == "Gagal - Dibatalkan Admin") {
+              $("#status_transaksi").addClass("badge rounded-pill text-bg-danger")
+            }
+            else {
+              $("#status_transaksi").addClass("badge rounded-pill text-bg-info")
+            }
+            $("#status_transaksi").css("padding", "10px")
+          }
+
+
+          let formatterRupiahID = new Intl.NumberFormat('id-ID', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          });
+          const formatNominal = () => {
+            const nominal = $("#nominal ").text()
+            $("#nominal ").text('Rp ' + formatterRupiahID.format(nominal) + '')
+          }
+
+          const btnCopyIDTransaksi = $('#btnCopyIDTransaksi')
+          btnCopyIDTransaksi.on('click', function () {
+            const id_transaksi = $('#id_transaksi').text().trim()
+            navigator.clipboard.writeText(id_transaksi)
+            Swal.fire('Berhasil', 'ID Transaksi berhasil disalin pada clipboard.', 'success');
+          })
+
+          bgStatus();
+          formatNominal();
+
+  
+        });
+      </script>
+      <%- include('./template/footer') %>

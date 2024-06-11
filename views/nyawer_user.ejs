@@ -1,0 +1,195 @@
+<%- include('./template/head') %>
+  <%- include('./template/header') %>
+    <div class="container d-flex justify-content-center my-5">
+      <div class="row w-50">
+        <div class="col-12">
+          <h3 id="nama_user" class="text-center">
+            <%= penerima.nama_user %>
+          </h3>
+        </div>
+        <div class="col-lg-12 shadow">
+          <div class="row">
+            <div class="card">
+              <div class="card-body">
+                <div class="formNyawer">
+                  <div class="row">
+                    <div class="col-12 mb-3">
+                      <label for="nominal" class="form-label">Nominal</label>
+                      <input type="number" class="form-control" id="nominal" placeholder="Masukkan jumlah Saweran Anda"
+                        value="" required />
+                    </div>
+
+                    <% if(!user) { %>
+                      <div class="col-12 mb-3">
+                        <label for="nama_pengirim" class="form-label">Dari</label>
+                        <input type="text" class="form-control" id="nama_pengirim" placeholder="Masukkan Nama Anda"
+                          value="" required />
+                      </div>
+
+                      <div class="col-12 mb-3">
+                        <label for="email_pengirim" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_pengirim" placeholder="Masukkan Email Anda"
+                          value="" required />
+                      </div>
+                      <% }else{ %>
+                        <div class="col-12 mb-3">
+                          <label for="nama_pengirim" class="form-label">Dari</label>
+                          <input type="text" class="form-control" id="nama_pengirim" placeholder="Masukkan Nama Anda"
+                            value="<%= user.nama_user%>" readonly />
+
+                          <div class="col-12 mb-3">
+                            <label for="email_pengirim" class="form-label" hidden>Email</label>
+                            <input type="email" class="form-control" id="email_pengirim"
+                              placeholder="Masukkan Email Anda" value="<%= user.email%>" readonly hidden />
+                          </div>
+                          <% } %>
+
+
+                            <div class="col-12 mb-3">
+                              <label for="pesan_pengirim" class="form-label">Pesan</label>
+                              <input type="text" class="form-control" id="pesan_pengirim"
+                                placeholder="Masukkan Pesan Anda" value="" required />
+                            </div>
+
+                            <div class="col-12 mb-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="i_agree" />
+                              <label class="form-check-label" for="i_agree">Saya setuju bahwa dukungan ini diberikan
+                                secara
+                                sukarela dan bukan sebagai imbalan atas kegiatan
+                                komersial, sesuai dengan
+                                <a href="#">Syarat dan ketentuan Sawerin</a></label>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                              <label for="metode_pembayaran" class="form-label">Pilih Metode Pembayaran</label>
+
+                              <div class="d-flex flex-wrap justify-content-start">
+                                <input type="text" id="iMetodePembayaran" hidden />
+
+                                <% if(dataMP.length>= 1) { %>
+                                  <% dataMP.forEach(function(el) { %>
+                                    <div
+                                      class="metodePembayaran">
+                                      <span value="<%= el.id_mp %>">
+                                        <%= el.nama_mp %>
+                                      </span>
+                                    </div>
+                                    <% }) %>
+                                      <% }else { %>
+                                        <div class="text-center">Tidak ada Metode Pembayaran yang tersedia</div>
+                                        <% } %>
+                              </div>
+                            </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('./template/js') %>
+
+
+      <script>
+        const getUserPenerimaFromURL = () => {
+          var arrURL = document.URL.split('/');
+
+          return arrURL[3].replace("#", "")
+        }
+
+        $(document).ready(function () {
+          const generateID = (prefix) => {
+            const prefixID_TX = prefix;
+            const characters =
+              "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let randomString = prefixID_TX;
+            for (let i = 0; i < 6; i++) {
+              randomString += characters.charAt(
+                Math.floor(Math.random() * characters.length)
+              );
+            }
+            return randomString;
+          };
+
+
+          $(".metodePembayaran").addClass("disabled-span");
+          $("#i_agree").change(function () {
+            if (this.checked) {
+              $(".metodePembayaran").removeClass("disabled-span");
+            } else {
+              $(".metodePembayaran span").css('border', '');
+              $(".metodePembayaran").addClass("disabled-span");
+            }
+          });
+
+
+          const btnPayNyawer = $(".metodePembayaran");
+
+          btnPayNyawer.on("click", function () {
+            const tagMetodePembayaran = $(".metodePembayaran span")
+
+            tagMetodePembayaran.css('border', '');
+            $(this).find("span").css("border-bottom", "2px solid red");
+            $(this).find("span").css('padding', '2px');
+
+
+            var mpVal = $(this).find("span").attr("value");
+            const dataNyawer = {
+              nominal: $("#nominal").val(),
+              nama_pengirim: $("#nama_pengirim").val(),
+              email_pengirim: $("#email_pengirim").val(),
+              user_id_penerima: getUserPenerimaFromURL(),
+              pesan_pengirim: $("#pesan_pengirim").val(),
+              metode_pembayaran_id: mpVal,
+            };
+
+            if (Object.values(dataNyawer).every(val => val !== null && val !== undefined && val !== "")) {
+              $(".metodePembayaran").addClass("disabled-span");
+
+              axios({
+                method: 'post', url: '/doNyawerUser', data: {
+                  dataNyawer
+                }
+              }).then((responseDataNyawer) => {
+
+                if (responseDataNyawer.data.statusNyawer == "OK") {
+                  let timerInterval
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Dukungan kamu telah diterima',
+                    text: 'Silahkan lanjutkan Pembayaran, Anda akan dialihkan.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: true,
+                    didOpen: () => {
+                      Swal.showLoading()
+                    },
+                    willClose: () => {
+                      clearInterval(timerInterval)
+                    }
+                  }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                      window.location.href = "bayar/" + responseDataNyawer.data.dataNyawer.id_transaksi
+                    }
+                  })
+
+                }
+                else {
+                  Swal.fire('Oops..', 'Maaf, ' + responseDataNyawer.data.statusNyawer + '.', 'info');
+                  $(".metodePembayaran").removeClass("disabled-span");
+                }
+              }).catch((err) => {
+                alert('error ' + err)
+              });
+
+            } else {
+              $(".metodePembayaran").removeClass("disabled-span");
+              Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+            }
+          });
+        });
+      </script>
+      <%- include('./template/footer') %>

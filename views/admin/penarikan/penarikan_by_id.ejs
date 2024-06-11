@@ -1,0 +1,256 @@
+<!-- Head -->
+<%- include('../template/head') %>
+
+    <body>
+        <div id="app">
+            <!-- Sidebar -->
+            <%- include('../template/sidebar') %>
+                <div id="main">
+
+                    <!-- Header -->
+                    <%- include('../template/header') %>
+
+                        <div class="page-heading">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 order-md-1 order-last">
+                                        <h3>Penarikan</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6 order-md-2 order-first">
+                                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dashboard">Dashboard</a></li>
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dompet">Dompet</a></li>
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/penarikan">Penarikan</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">
+                                                    <%= penarikan_by_id[0].reff_transaksi %>
+                                                </li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Basic Tables start -->
+                        <section class="section">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    ID Penarikan / Reff Transaksi Dompet
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="reff_transaksi">
+                                                        <%= penarikan_by_id[0].reff_transaksi %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Nama / Username
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="nominal">
+                                                        <%= penarikan_by_id[0].nama_user %> /
+                                                            <%= penarikan_by_id[0].username %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Nama Transaksi
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="nama_transaksi">
+                                                        <%= penarikan_by_id[0].nama_transaksi %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Penyesuaian
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="penyesuaian">
+                                                        <%= penarikan_by_id[0].penyesuaian %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Nominal
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="nominal">
+                                                        <%= penarikan_by_id[0].nominal %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Waktu Transaksi
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="waktu_transaksi">
+                                                        <%= penarikan_by_id[0].waktu_transaksi_dompet %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Status Penarikan / Transaksi Dompet
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="status_penarikan">
+                                                        <%= penarikan_by_id[0].status_transaksi_dompet %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                                <% if(penarikan_by_id[0].status_transaksi_dompet=="Pending" ) {%>
+                                    <div class="card-footer">
+                                        <div id="changeUser" style="float: right;">
+                                            <span>Ingin mengupdate data?</span> <button id="btnModalUpdate"
+                                                class="btn btn-outline-primary">Klik
+                                                disini</button>
+                                        </div>
+                                    </div>
+                                    <% }%>
+                            </div>
+
+                        </section>
+                        <!-- Basic Tables end -->
+
+                        <!-- Footer -->
+                        <%- include('../template/footer') %>
+                </div>
+        </div>
+
+        <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="modalUpdateLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalUpdateLabel">Update data</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-2" hidden>
+                                <label for="reff_transaksi" class="form-label">ID MP</label>
+                                <input type="text" class="form-control" id="reff_transaksi_update"
+                                    value="<%= penarikan_by_id[0].reff_transaksi %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="status_penarikan" class="form-label">Status Penarikan / Transaksi
+                                    Dompet</label>
+                                <select class="form-select" id="status_penarikan_update">
+                                    <% if(penarikan_by_id[0].status_transaksi_dompet=="Pending" ) {%>
+                                        <option value="">- Pilih Status Penarikan -</option>
+                                        <option value="Sukses">Sukses</option>
+                                        <option value="Pending" disabled>Pending</option>
+                                        <option value="Gagal">Gagal</option>
+
+                                        <% } else {%>
+                                            <option value="" selected>- Pilih Status Penarikan -</option>
+                                            <option value="Sukses" disabled>Sukses - Sudah tidak dapat diupdate</option>
+                                            <option value="Pending" disabled>Pending - Sudah tidak dapat diupdate
+                                            </option>
+                                            <option value="Gagal" disabled>Gagal - Sudah tidak dapat diupdate</option>
+                                            <% }%>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnKonfirmasi">Konfrimasi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JS -->
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+
+                    $("#btnModalUpdate").on('click', function () {
+                        $("#modalUpdate").modal("show")
+                    });
+
+                    $("#btnKonfirmasi").on('click', function () {
+                        const dataPenarikan = {
+                            reff_transaksi: $("#reff_transaksi_update").val(),
+                            status_penarikan: $("#status_penarikan_update").val()
+                        }
+                        if (Object.values(dataPenarikan).every(val => val !== null && val !== undefined && val !== "")) {
+                            axios({
+                                method: 'post', url: '/admin/penarikan/doUpdatePenarikan', data: {
+                                    dataPenarikan
+                                }
+                            }).then((responseUpdate) => {
+                                if (responseUpdate.data.statusUpdate == "OK") {
+                                    $("#modalUpdate").modal('hide')
+                                    let timerInterval
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'Data telah berhasil diupdate.',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: true,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval)
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            location.reload()
+                                        }
+                                    })
+                                }
+                                else {
+                                    $("#modalUpdate").modal('hide')
+                                    Swal.fire('Info', responseUpdate.data.statusUpdate, 'info');
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+                        }
+                    })
+
+                });
+            </script>
+    </body>
+
+    </html>

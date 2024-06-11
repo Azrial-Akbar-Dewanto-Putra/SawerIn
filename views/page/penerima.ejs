@@ -1,0 +1,33 @@
+<%- include('../template/head') %>
+<%- include('../template/header') %>
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header bg-danger text-white">
+            Daftar User Penerima
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <% if(dataPenerima) { %>
+                    <% dataPenerima.forEach((el)=> { %>
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h4 class="card-title text-center"><%= el.nama_user %></h4>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="/<%= el.username %>" class="btn btn-outline-danger">Beri <%= el.username %></a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="col-lg-12 text-center">
+                        <h4>Tidak ada User Penerima</h4>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('../template/js') %>
+<%- include('../template/footer') %>

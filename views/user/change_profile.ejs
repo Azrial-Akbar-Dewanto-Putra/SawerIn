@@ -1,0 +1,213 @@
+<%- include('../template/head') %>
+    <style>
+        .page {
+            cursor: pointer;
+        }
+
+        #judulPage {
+            float: right;
+        }
+    </style>
+    <%- include('../template/header') %>
+        <div class="container mt-5">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../user/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="../profile">Profle</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Change</li>
+                </ol>
+            </nav>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            Change Profile
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            User ID
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="user_id_change_profile"
+                                                value="<%= dataUser[0].user_id %>" disabled />
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Username
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="username_change_profile"
+                                                value="<%= dataUser[0].username %>" disabled />
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Nama
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="nama_user_change_profile"
+                                                value="<%= dataUser[0].nama_user %>" />
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Email
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="email_change_profile"
+                                                value="<%= dataUser[0].email %>" disabled />
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            No. Telp
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="no_telp_change_profile"
+                                                value="<%= dataUser[0].no_telp %>" disabled />
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Password
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="password" class="form-control" id="password_change_profile"
+                                                value="<%= dataUser[0].password %>" />
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <button style="float: right;" id="btnShowModalConfirm" class="btn btn-info">Change
+                                Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Modal Confirm Change Profile -->
+        <div class="modal fade" id="modalConfimChangeProfile" tabindex="-1"
+            aria-labelledby="modalConfimChangeProfileLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalConfimChangeProfileLabel">Konfirmasi Change Profile</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <label for="password_check_valid" class="form-label">Konfirmasi Password</label>
+                                <input type="password" class="form-control" id="password_check_valid" value="Lukman123">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="btnChangeProfile">Confirm Change
+                            Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+                    let formatterID = new Intl.NumberFormat('id-ID', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                    const formatRp = (nominal) => {
+                        return 'Rp ' + formatterID.format(nominal)
+                    }
+
+                    const total_saldo = $("#total_saldo").text().trim()
+                    $("#total_saldo").text(formatRp(total_saldo))
+
+                    const btnShowModalConfirm = $("#btnShowModalConfirm")
+                    btnShowModalConfirm.on('click', function () {
+                        $("#modalConfimChangeProfile").modal('show')
+                    })
+
+                    const btnChangeProfile = $("#btnChangeProfile")
+                    btnChangeProfile.on('click', function () {
+                        const dataChangeProfile = {
+                            nama_user: $("#nama_user_change_profile").val(),
+                            password: $("#password_change_profile").val(),
+
+                            password_check_valid: $("#password_check_valid").val()
+                        }
+
+                        if (Object.values(dataChangeProfile).every(val => val !== null && val !== undefined && val !== "")) {
+                            $("#password_check_valid").removeClass('is-invalid')
+
+                            axios({
+                                method: 'post', url: '/user/profile/doChangeProfile', data: {
+                                    dataChangeProfile
+                                }
+                            }).then((responseChangeProfile) => {
+                                if (responseChangeProfile.data.statusChangeProfile == "OK") {
+                                    $("#modalConfimChangeProfile").modal('hide')
+                                    let timerInterval
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Selamat, Data telah berhasil diubah.',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: true,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval)
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            window.location.href = "/user/profile"
+                                        }
+                                    })
+                                }
+                                else if (responseChangeProfile.data.statusChangeProfile == "Konfirmasi Password tidak Benar.") {
+                                    $("#password_check_valid").val('')
+                                    $("#password_check_valid").addClass('is-invalid')
+                                    Swal.fire('Gagal', 'Konfirmasi Password tidak Benar.', 'info');
+                                }
+                                else {
+                                    Swal.fire('Info', responseChangeProfile.data.statusChangeProfile, 'info');
+                                }
+                            })
+                        }
+                        else {
+                            Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+                        }
+                    })
+
+
+
+                })
+            </script>

@@ -1,0 +1,107 @@
+<!-- Head -->
+<%- include('../template/head') %>
+
+    <body>
+        <div id="app">
+            <!-- Sidebar -->
+            <%- include('../template/sidebar') %>
+                <div id="main">
+
+                    <!-- Header -->
+                    <%- include('../template/header') %>
+
+                        <div class="page-heading">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 order-md-1 order-last">
+                                        <h3>Dompet</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6 order-md-2 order-first">
+                                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dashboard">Dashboard</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">Dompet
+                                                </li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Basic Tables start -->
+                        <section class="section">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <table class="table" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Dompet</th>
+                                                <th>Reff Transaksi</th>
+                                                <th>Username</th>
+                                                <th>Nama Transaksi</th>
+                                                <th>Penyesuaian</th>
+                                                <th>Nominal</th>
+                                                <th>Status Transaksi Dompet</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% dompet.forEach((el)=> {%>
+                                                <tr>
+                                                    <td>
+                                                        <a href="/admin/dompet/<%= el.id_dompet%>">
+                                                            <%= el.id_dompet%>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <% if(el.penyesuaian=="Credit" ) {%>
+                                                            <a href="/admin/transaksi_nyawer/<%= el.reff_transaksi%>">
+                                                                <%= el.reff_transaksi%>
+                                                            </a>
+                                                            <% } %>
+                                                                <% if(el.penyesuaian=="Debit" ) {%>
+                                                                    <a href="/admin/penarikan/<%= el.id_dompet%>">
+                                                                        <%= el.reff_transaksi%>
+                                                                    </a>
+                                                                    <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.username%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.nama_transaksi%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.penyesuaian%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.nominal%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.status_transaksi_dompet%>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </section>
+                        <!-- Basic Tables end -->
+
+                        <!-- Footer -->
+                        <%- include('../template/footer') %>
+                </div>
+        </div>
+        https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/scss/pages/auth.scss
+
+
+        <!-- JS -->
+        <%- include('../template/js') %>
+        <script src="https://zuramai.github.io/mazer/demo/assets/static/js/pages/simple-datatables.js"></script>
+    </body>
+
+    </html>

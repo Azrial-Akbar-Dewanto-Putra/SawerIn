@@ -1,0 +1,186 @@
+<%- include('../template/head') %>
+    <style>
+        .page {
+            cursor: pointer;
+        }
+
+        #judulPage {
+            float: right;
+        }
+    </style>
+    <%- include('../template/header') %>
+        <div class="container mt-5">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            Profile
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            User ID
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="user_id">
+                                                <%= dataUser[0].user_id %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Link Page
+                                        </div>
+                                        <div class="col-6">
+                                            <a id="link_page"
+                                                href="http://127.0.0.1:3030/<%= dataUser[0].username %>">http://127.0.0.1:3030/
+                                                <%= dataUser[0].username %>
+                                            </a>
+                                            <span class="mx-2">|</span>
+                                            <img id="btnCopyLinkPage" style="cursor: pointer;" width="20"
+                                                src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png" alt="">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Username
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="username">
+                                                <%= dataUser[0].username %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Nama
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="nama_user">
+                                                <%= dataUser[0].nama_user %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Email
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="email">
+                                                <%= dataUser[0].email %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            No. Telp
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="no_telp">
+                                                <%= dataUser[0].no_telp %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Total Saldo
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="total_saldo">
+                                                <%= Saldo %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Bergabung sejak
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="join_since">
+                                                <%= dataUser[0].createdAt %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            Status User
+                                        </div>
+                                        <div class="col-6">
+                                            <span id="status_user">
+                                                <%= dataUser[0].status_user %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <div id="changeProfile" style="float: right;">
+                                <span>Ingin mengupdate data?</span> <a class="btn btn-warning"
+                                    href="/user/profile/change">Klik disini</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+                    let formatterID = new Intl.NumberFormat('id-ID', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                    const formatRp = (nominal) => {
+                        return 'Rp ' + formatterID.format(nominal)
+                    }
+
+                    $("#btnCopyLinkPage").on('click', function () {
+                        const link_page = $('#link_page').attr('href')
+                        navigator.clipboard.writeText(link_page)
+                        Swal.fire('Berhasil', 'Link Page berhasil disalin pada clipboard.', 'success');
+                    })
+
+                    const total_saldo = $("#total_saldo").text().trim()
+                    $("#total_saldo").text(formatRp(total_saldo))
+
+
+
+                })
+            </script>
+            <%- include('../template/footer') %>

@@ -1,0 +1,95 @@
+<%- include('../template/head') %>
+    <%- include('../template/header_dashboard') %>
+
+        <div class="d-flex gap">
+            <!--Sidebar-->
+            <%- include('../template/sidebar') %>
+
+            <!--Content-->
+            <div class="container mt-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="../dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Saweran Masuk</li>
+                    </ol>
+                </nav>
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white">
+                        Saweran Masuk
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover" id="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nominal</th>
+                                    <th scope="col">Biaya Admin</th>
+                                    <th scope="col">Total Terima</th>
+                                    <!-- <th scope="col">Metode Pembayaran</th> -->
+                                    <th scope="col">Dari</th>
+                                    <th scope="col">Pesan Mereka</th>
+                                    <th scope="col">Waktu Transaksi</th>
+                                    <th scope="col">Status Transaksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(saweranMasuk) {%>
+                                    <% saweranMasuk.forEach((el)=> { %>
+                                        <tr>
+                                            <th scope="row">
+                                                <a href="/user/saweran/masuk/<%= el.id_transaksi%>">
+                                                    <%= el.id_transaksi%>
+                                                </a>
+                                            </th>
+                                            <td id="td_nominal">
+                                                <%= el.nominal %>
+                                            </td>
+                                            <td>
+                                                <%= el.biaya_admin %>
+                                            </td>
+                                            <td>
+                                                <%= parseInt(el.nominal) - parseInt(el.biaya_admin) %>
+                                            </td>
+                                            <!-- <td>
+                                                <%= el.nama_mp %>
+                                            </td> -->
+                                            <td>
+                                                <%= el.nama_pengirim %>
+                                                    <!-- - <p> <%= el.username    %></p> -->
+                                            </td>
+                                            <td>
+                                                <%= el.pesan_pengirim %>
+                                            </td>
+                                            <td>
+                                                <%= el.waktu_transaksi %>
+                                            </td>
+                                            <td>
+                                                <%= el.status_transaksi %>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <%- include('../template/footer_dashboard') %>
+            </div>
+        </div>
+
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+
+                    let formatterRupiahID = new Intl.NumberFormat('id-ID', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                    const formatNominal = (nominal) => {
+                        return 'Rp ' + formatterRupiahID.format(nominal)
+                    }
+
+                    $('#table').DataTable();
+                })
+            </script>

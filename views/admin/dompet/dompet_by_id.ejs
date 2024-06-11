@@ -1,0 +1,179 @@
+<!-- Head -->
+<%- include('../template/head') %>
+
+    <body>
+        <div id="app">
+            <!-- Sidebar -->
+            <%- include('../template/sidebar') %>
+                <div id="main">
+
+                    <!-- Header -->
+                    <%- include('../template/header') %>
+
+                        <div class="page-heading">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 order-md-1 order-last">
+                                        <h3>Dompet</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6 order-md-2 order-first">
+                                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dashboard">Dashboard</a></li>
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dompet">Dompet</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">
+                                                    <%= dompet_by_id[0].id_dompet %>
+                                                </li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Basic Tables start -->
+                        <section class="section">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    ID Dompet
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="id_dompet">
+                                                        <%= dompet_by_id[0].id_dompet %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Reff Transaksi
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="id_dompet">
+                                                        <% if(dompet_by_id[0].penyesuaian=="Credit" ) {%>
+                                                            <%= dompet_by_id[0].reff_transaksi %>
+                                                                <%} else if(dompet_by_id[0].penyesuaian=="Debit" ){%>
+                                                                    <a
+                                                                        href="/admin/penarikan/<%= dompet_by_id[0].id_dompet%>">
+                                                                        <%= dompet_by_id[0].reff_transaksi %>
+                                                                    </a>
+                                                                    <%}%>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Username
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="username">
+                                                        <%= dompet_by_id[0].username %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Nama Transaksi
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="nama_transaksi">
+                                                        <%= dompet_by_id[0].nama_transaksi %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Penyesuaian
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="penyesuaian">
+                                                        <%= dompet_by_id[0].penyesuaian %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Nominal
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="nominal">
+                                                        <%= dompet_by_id[0].nominal %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Waktu Transaksi
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="waktu_transaksi">
+                                                        <%= dompet_by_id[0].waktu_transaksi_dompet %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Status Transaksi Dompet
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="status_mp">
+                                                        <%= dompet_by_id[0].status_transaksi_dompet %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </section>
+                        <!-- Basic Tables end -->
+
+                        <!-- Footer -->
+                        <%- include('../template/footer') %>
+                </div>
+        </div>
+
+
+        <!-- JS -->
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+
+
+                });
+            </script>
+    </body>
+
+    </html>

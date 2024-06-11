@@ -1,0 +1,27 @@
+<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/js/app.js"></script>
+
+<!-- Need: Apexcharts -->
+<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/extensions/apexcharts/apexcharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/pages/dashboard.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/extensions/jquery/jquery.min.js"></script>
+
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+
+<script>
+    const btnFlashMessage = $('#infoFlashMessage')
+
+    btnFlashMessage.on('click', function () {
+
+        Swal.fire('Info', '' + $(this).text(), 'info');
+    })
+
+    btnFlashMessage.click()
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

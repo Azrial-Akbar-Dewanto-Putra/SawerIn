@@ -1,0 +1,92 @@
+<!-- Head -->
+<%- include('../template/head') %>
+
+    <body>
+        <div id="app">
+            <!-- Sidebar -->
+            <%- include('../template/sidebar') %>
+                <div id="main">
+
+                    <!-- Header -->
+                    <%- include('../template/header') %>
+
+                        <div class="page-heading">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 order-md-1 order-last">
+                                        <h3>Metode Pembayaran</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6 order-md-2 order-first">
+                                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dashboard">Dashboard</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">Metode Pembayaran
+                                                </li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Basic Tables start -->
+                        <section class="section">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <table class="table" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th>ID MP</th>
+                                                <th>Nama MP</th>
+                                                <th>Biaya MP</th>
+                                                <th>Penyesuaian Biaya</th>
+                                                <th>Publish</th>
+                                                <th>Status MP</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% metode_pembayaran.forEach((el)=> {%>
+                                                <tr>
+                                                    <td>
+                                                        <a href="/admin/metode_pembayaran/<%= el.id_mp%>">
+                                                            <%= el.id_mp%>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.nama_mp%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.biaya_mp%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.penyesuaian_biaya%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.publish%>
+                                                    </td>
+                                                    <td>
+                                                        <%= el.status_mp%>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </section>
+                        <!-- Basic Tables end -->
+
+                        <!-- Footer -->
+                        <%- include('../template/footer') %>
+                </div>
+        </div>
+
+        <!-- JS -->
+        <%- include('../template/js') %>
+        <script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/pages/datatables.js"></script>
+    </body>
+
+    </html>

@@ -1,0 +1,319 @@
+<%- include('../template/head') %>
+    <%- include('../template/header_dashboard') %>
+    <div class="d-flex gap">
+        <!--Sidebar-->
+        <%- include('../template/sidebar') %>
+
+        <!--Content-->
+        <div class="container mt-3">
+                <% if(kat=="masuk" ){ %>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="../../../user/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="../masuk">Saweran Masuk</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= detailSaweranByID[0].id_transaksi %>
+                            </li>
+                        </ol>
+                    </nav>
+                    <div class="card">
+                        <div class="card-header">
+                            Detail Transaksi Nyawer Masuk
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">ID Transaksi</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].id_transaksi %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Reff PG</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].reff_pg %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Nominal</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic" id="nominal">
+                                                <%=detailSaweranByID[0].nominal %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">User ID Pengirim</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].user_id_pengirim %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Nama Pengirim</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].nama_pengirim %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Email Pengirim</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].email_pengirim %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Pesan Pengirim</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].pesan_pengirim %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Metode Pembayaran</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].nama_mp %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Biaya Admin</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic" id="biaya_admin">
+                                                <%=detailSaweranByID[0].biaya_admin %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Total Terima</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic" id="total_terima">
+                                                <%=detailSaweranByID[0].total_terima %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Waktu Transaksi</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic">
+                                                <%=detailSaweranByID[0].waktu_transaksi %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <span class="fw-bolder">Status Transaksi</span>
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="fst-italic" id="status_transaksi">
+                                                <%=detailSaweranByID[0].status_transaksi %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } else if(kat=="keluar" ){ %>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="../../../user/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="../keluar">Saweran Keluar</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= detailSaweranByID[0].id_transaksi %>
+                            </li>
+                        </ol>
+                        <div class="card">
+                            <div class="card-header">
+                                Detail Transaksi Nyawer Keluar
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">ID Transaksi</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic">
+                                                    <%=detailSaweranByID[0].id_transaksi %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">Reff PG</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic">
+                                                    <%=detailSaweranByID[0].reff_pg %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">Nominal</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic" id="nominal">
+                                                    <%=detailSaweranByID[0].nominal %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">Pesan Anda</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic">
+                                                    <%=detailSaweranByID[0].pesan_pengirim %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">Metode Pembayaran</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic">
+                                                    <%=detailSaweranByID[0].nama_mp %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">Waktu Transaksi</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic">
+                                                    <%=detailSaweranByID[0].waktu_transaksi %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span class="fw-bolder">Status Transaksi</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span class="fst-italic" id="status_transaksi">
+                                                    <%=detailSaweranByID[0].status_transaksi %>
+                                                </span>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    <%- include('../template/footer_dashboard') %>
+            </div>
+    </div>
+
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+
+                    const bgStatus = () => {
+                        const status_transaksi = $("#status_transaksi").text().trim()
+                        if (status_transaksi == "Pending - Menunggu Pembayaran" || status_transaksi == "Pending - Menunggu Konfirmasi Admin") {
+                            $("#status_transaksi").addClass("badge rounded-pill text-bg-warning")
+                        }
+                        else if (status_transaksi == "Sukses") {
+                            $("#status_transaksi").addClass("badge rounded-pill text-bg-success")
+                        }
+                        else if (status_transaksi == "Gagal - Dibatalkan System" || status_transaksi == "Gagal - Dibatalkan Admin") {
+                            $("#status_transaksi").addClass("badge rounded-pill text-bg-danger")
+                        }
+                        else {
+                            $("#status_transaksi").addClass("badge rounded-pill text-bg-info")
+                        }
+                        $("#status_transaksi").css("padding", "10px")
+                    }
+
+                    bgStatus()
+
+
+
+                    let formatterID = new Intl.NumberFormat('id-ID', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                    const formatRp = (nominal) => {
+                        return 'Rp ' + formatterID.format(nominal)
+                    }
+
+                    const formatNum = () => {
+                        const nominal = $("#nominal").text().trim()
+                        $("#nominal").text(formatRp(nominal))
+
+                        const biaya_admin = $("#biaya_admin").text().trim()
+                        $("#biaya_admin").text(formatRp(biaya_admin))
+
+                        const total_terima = $("#total_terima").text().trim()
+                        $("#total_terima").text(formatRp(total_terima))
+                    }
+
+                    formatNum()
+                })
+            </script>

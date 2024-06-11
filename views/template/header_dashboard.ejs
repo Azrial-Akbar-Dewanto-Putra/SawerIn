@@ -1,0 +1,56 @@
+<body>
+    <nav class="bg-primer mb-10">
+        <div class="mx-4">
+        <header
+            class="d-flex justify-content-between py-3">
+            <div class="d-flex">
+                <img src="/assets/static/images/logo.png" alt="logo" class="logo">
+                <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-decoration-none text-light" style="font-size: 30px; font-weight: bold;">
+                    SawerIn
+                </a>
+            </div>
+
+            <ul class="nav mb-2 justify-content-center mb-md-0">
+                <li>
+                    <a href="#features" class="nav-link px-2 text-light"> Features </a>
+                </li>
+                <li>
+                    <a href="#faqs" class="nav-link px-2 text-light"> FAQs </a>
+                </li>
+                <li>
+                    <a href="#about" class="nav-link px-2 text-light"> About </a>
+                </li>
+            </ul>
+
+            <% if(!user) {%>
+                <div class="text-end">
+                    <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal"
+                        data-bs-target="#modalLogin">
+                        Login
+                    </button>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#modalRegister">Sign-up</button>
+                </div>
+                <% } %>
+                    <% if(user) { %>
+                        <div class="dropdown text-end dropdown-center d-flex flex-column justify-content-center">
+                            <a href="#" class="d-block link-light text-decoration-none dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                                    class="rounded-circle" />
+                                | <%= user.nama_user %>
+                            </a>
+                            <ul class="dropdown-menu text-small">
+                                <li><a class="dropdown-item" href="http://127.0.0.1:3030/user/dashboard">Dashboard</a>
+                                </li>
+                                <li><a class="dropdown-item" href="http://127.0.0.1:3030/user/profile">Profile</a></li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li><a class="dropdown-item" id="btnLogoutUser" style="cursor: pointer;">Logout</a></li>
+                            </ul>
+                        </div>
+                        <% } %>
+        </header>
+        </div>
+    </nav>

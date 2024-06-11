@@ -1,0 +1,212 @@
+<%- include('../template/head') %>
+    <%- include('../template/header_dashboard') %>
+
+        <div class="d-flex gap">
+            <!--Sidebar-->
+            <%- include('../template/sidebar') %>
+
+            <div class="container mt-3">
+                <nav aria-label="breadcrumb" class="mt-3 ml-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="../user/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Saldo</li>
+                    </ol>
+                </nav>
+
+                <!--Content-->
+                <div class="card shadow">
+                    <div class="card-header d-flex justify-content-between bg-info text-white">
+                        <div class="d-flex flex-column justify-content-center">
+                            <h3 class="card-title">Saldo</h3>
+                        </div>
+                        <div style="float: right;">Total saldo Anda: <span id="totalSaldo" class="fw-bolder">
+                                        <%= Saldo %>
+                                    </span> <br>
+                            <button style="float: right;" href="" class="btn btn-warning mt-2" id="btnModalWD">Tarik
+                                Saldo</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover" id="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Reff Transaksi</th>
+                                <th scope="col">Nama Transaksi</th>
+                                <th scope="col">Penyesuaian</th>
+                                <th scope="col">Nominal</th>
+                                <th scope="col">Status Transaksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% if(dompetUser) {%>
+                                <% dompetUser.forEach((el)=> { %>
+                                    <tr>
+                                        <th scope="row">
+                                            <%= el.waktu_transaksi_dompet %>
+                                        </th>
+                                        <td>
+                                            <% if(el.penyesuaian=="Credit" ) {%>
+                                                <a href="/user/saweran/masuk/<%= el.reff_transaksi%>">
+                                                    <%= el.reff_transaksi%>
+                                                </a>
+                                            <% } %>
+                                            <% if(el.penyesuaian=="Debit" ) {%>
+                                                <%= el.reff_transaksi%>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <%= el.nama_transaksi %>
+                                        </td>
+                                        <td>
+                                            <%= el.penyesuaian %>
+                                        </td>
+                                        <td>
+                                            <%= el.nominal %>
+                                        </td>
+                                        <td>
+                                            <%= el.status_transaksi_dompet %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <%- include('../template/footer_dashboard') %>
+            </div>
+        </div>
+
+
+        <!-- Modal WD-->
+        <div class="modal fade" id="modalWD" tabindex="-1" aria-labelledby="modalWDLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalWDLabel">Tarik Saldo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-1">
+                                <div style="float: right;">
+                                    Total saldo Anda: <span id="totalSaldoModal" class="fw-bolder">
+                                        <%= Saldo %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label for="nominal" class="form-label">Nominal</label>
+                                <input type="number" class="form-control" id="nominal" value="10000">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" id="btnTarikSaldo">Tarik sekarang!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+
+                    const btnModalWD = $("#btnModalWD")
+                    btnModalWD.on('click', function () {
+                        $("#modalWD").modal('show')
+                    })
+
+                    const btnTarikSaldo = $("#btnTarikSaldo")
+                    btnTarikSaldo.on("click", function () {
+                        const dataTarikSaldo = {
+                            nominal: $("#nominal").val()
+                        }
+
+                        if (Object.values(dataTarikSaldo).every(val => val !== null && val !== undefined && val !== "")) {
+                            $("#nominal").removeClass("is-invalid");
+                            if (dataTarikSaldo.nominal >= 10000) {
+                                axios({
+                                    method: 'post', url: '/user/doTarikSaldoUser', data: {
+                                        dataTarikSaldo
+                                    }
+                                }).then((responseDataTarikSaldo) => {
+                                    if (responseDataTarikSaldo.data.statusPenarikanSaldo == "OK") {
+                                        let timerInterval
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil',
+                                            text: "Permintaan penarikan saldo Anda telah diterima, akan diproses.",
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                            showConfirmButton: true,
+                                            didOpen: () => {
+                                                Swal.showLoading()
+                                            },
+                                            willClose: () => {
+                                                clearInterval(timerInterval)
+                                            }
+                                        }).then((result) => {
+                                            /* Read more about handling dismissals below */
+                                            if (result.dismiss === Swal.DismissReason.timer) {
+                                                location.reload()
+                                            }
+                                        })
+                                    }
+                                    else {
+                                        let timerInterval
+                                        Swal.fire({
+                                            icon: 'info',
+                                            title: 'Info',
+                                            text: responseDataTarikSaldo.data.statusPenarikanSaldo,
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                            showConfirmButton: true,
+                                            didOpen: () => {
+                                                Swal.showLoading()
+                                            },
+                                            willClose: () => {
+                                                clearInterval(timerInterval)
+                                            }
+                                        }).then((result) => {
+                                            /* Read more about handling dismissals below */
+                                            if (result.dismiss === Swal.DismissReason.timer) {
+                                                // location.reload()
+                                                $("#modalWD").modal('hide')
+                                                $("#nominal").val('')
+                                            }
+                                        })
+                                    }
+                                });
+                            } else {
+                                $("#nominal").focus()
+                                Swal.fire('Gagal', 'Maaf, Minimal Penarikan Saldo Rp 10.000.', 'info');
+                            }
+                        }
+                        else {
+                            $("#nominal").addClass("is-invalid");
+                            Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+                        }
+
+
+                    })
+
+                    let formatterRupiahID = new Intl.NumberFormat('id-ID', {
+                        style: 'decimal',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                    const formatNominal = (nominal) => {
+                        return 'Rp ' + formatterRupiahID.format(nominal)
+                    }
+
+                    const totalSaldo = $("#totalSaldo").text()
+                    $("#totalSaldo").text(formatNominal(totalSaldo))
+
+                    const totalSaldoModal = $("#totalSaldoModal").text()
+                    $("#totalSaldoModal").text(formatNominal(totalSaldoModal))
+
+                    $('#table').DataTable();
+                })
+            </script>

@@ -1,0 +1,49 @@
+.metodePembayaran{
+    color: black;
+    border-radius: 10px;
+    margin: 3px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.metodePembayaran :hover {
+    color: red;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-payment {
+    border-radius: 10px;
+    width: 50%;
+}
+
+.gap {
+    gap: 20px;
+}
+
+.sidebar{
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: #f0f0f0;
+    z-index: -1;
+    transition: all 0.3s ease-in-out;
+}
+
+:root {
+    --primer: #0dcaf0;
+    --second: #68D2E8;
+}
+
+.bg-primer {
+    background-color: var(--primer);
+}
+
+.bg-second {
+    background-color: var(--second);
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+}

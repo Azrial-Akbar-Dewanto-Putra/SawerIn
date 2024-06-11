@@ -1,0 +1,177 @@
+<!-- Head -->
+<%- include('./template/head') %>
+
+    <body>
+        <div id="app">
+            <!-- Sidebar -->
+            <%- include('./template/sidebar') %>
+                <div id="main">
+                    <!-- Header -->
+                    <%- include('./template/header') %>
+
+                    <div class="page-heading">
+                        <div class="page-title">
+                            <div class="row">
+                                <div class="col-12 col-md-6 order-md-1 order-last">
+                                    <h3>Admin</h3>
+                                </div>
+                                <div class="col-12 col-md-6 order-md-2 order-first">
+                                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="http://127.0.0.1:3030/admin/dashboard">Dashboard</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">Admin
+                                            </li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="d-flex row">
+                        <div class="col-sm">
+                            <div class="d-flex gap justify-content-start flex-wrap">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="color: #364b98"> <a href="/admin/user">Total User</a></h5>
+                                        <p>Total Users: <%= total.total_users %></p>
+                                    </div>
+                                </div>
+                                <div class="card shadow" >
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="color: #364b98"><a href="/admin/transaksi_nyawer">Total Transaksi</a></h5>
+                                        <p>Total Transaksi Sawerin: <%= total.total_transaksi_sawerin %></p>
+                                    </div>
+                                </div>
+                                <div class="card shadow ">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="color: #364b98"><a href="/admin/metode_pembayaran">Total Metode Pembayaran</a></h5>
+                                        <p>Total Metode Pembayaran: <%= total.total_metode_pembayaran %></p>
+                                    </div>
+                                </div>
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="color: #364b98"><a href="/admin/penarikan">Total Penarikan</a></h5>
+                                        <p>Total Penarikan User Pembayaran: <%= penarikan.total_penarikan %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-center flex-column align-items-center">
+                                        <h3 style="color: #364b98">Selamat Datang</h3>
+                                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" style="width: 150px;"
+                                             alt="Avatar" />
+                                        <h4 class="text-dark"><%= admin.nama_admin %></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- chart -->
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3 text-center" style="color: #364b98">Transaksi</h5>
+                                    <canvas id="transactionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3 text-center" style="color: #364b98">Transaksi Terbaru</h5>
+                                    <canvas id="transactionLatestChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <!-- JS -->
+        <%- include('./template/js') %>
+
+        <script>
+            let transactions = <%- JSON.stringify(trx) %>;
+            let transactionsLatest = <%- JSON.stringify(trxLatest) %>;
+
+            function formatDate(dateString) {
+                let date = new Date(dateString);
+                let day = date.getDate().toString().padStart(2, '0');
+                let month = (date.getMonth() + 1).toString().padStart(2, '0');
+                let year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+
+            function formatDateLatest(dateString) {
+                let date = new Date(dateString);
+                let day = date.getDate().toString().padStart(2, '0');
+                let month = (date.getMonth() + 1).toString().padStart(2, '0');
+                let year = date.getFullYear();
+                let hours = date.getHours();
+                let minutes = date.getMinutes();
+                let seconds = date.getSeconds();
+
+                return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            }
+
+            let labels = transactions.map(item => formatDate(item.tanggal));
+            let dataValues = transactions.map(item => item.total_transaksi);
+
+            let labelsLatest = transactionsLatest.map(item => formatDateLatest(item.waktu_transaksi));
+            let dataValuesLatest = transactionsLatest.map(item => item.nominal);
+
+            // Transaction Chart
+            const ctx = document.getElementById('transactionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Transaksi Sawerin Per Hari',
+                        data: dataValues,
+                        borderWidth: 1,
+                        barPercentage: 0.5,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        // Transaction Latest Chart
+        const ctxLatest = document.getElementById('transactionLatestChart').getContext('2d');
+        new Chart(ctxLatest, {
+            type: 'bar',
+            data: {
+                labels: labelsLatest,
+                datasets: [{
+                    label: 'Total Transaksi Sawerin Terakhir',
+                    data: dataValuesLatest,
+                    borderWidth: 1,
+                    barPercentage: 0.5,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        </script>
+    </body>
+
+    </html>

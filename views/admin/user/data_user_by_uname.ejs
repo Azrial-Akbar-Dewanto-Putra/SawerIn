@@ -1,0 +1,303 @@
+<!-- Head -->
+<%- include('../template/head') %>
+
+    <body>
+        <div id="app">
+            <!-- Sidebar -->
+            <%- include('../template/sidebar') %>
+                <div id="main">
+
+                    <!-- Header -->
+                    <%- include('../template/header') %>
+
+                        <div class="page-heading">
+                            <div class="page-title">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 order-md-1 order-last">
+                                        <h3>User</h3>
+                                    </div>
+                                    <div class="col-12 col-md-6 order-md-2 order-first">
+                                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/dashboard">Dashboard</a></li>
+                                                <li class="breadcrumb-item"><a
+                                                        href="http://127.0.0.1:3030/admin/user">User</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">
+                                                    <%= data_user_by_uname[0].username %>
+                                                </li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Basic Tables start -->
+                        <section class="section">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    User ID
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="user_id">
+                                                        <%= data_user_by_uname[0].user_id %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Link Page
+                                                </div>
+                                                <div class="col-6">
+                                                    <a id="link_page"
+                                                        href="http://127.0.0.1:3030/<%= data_user_by_uname[0].username %>">http://127.0.0.1:3030/
+                                                        <%= data_user_by_uname[0].username %>
+                                                    </a>
+                                                    <span class="mx-2">|</span>
+                                                    <img id="btnCopyLinkPage" style="cursor: pointer;" width="20"
+                                                        src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png"
+                                                        alt="">
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Username
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="username">
+                                                        <%= data_user_by_uname[0].username %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Nama
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="nama_user">
+                                                        <%= data_user_by_uname[0].nama_user %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Email
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="email">
+                                                        <%= data_user_by_uname[0].email %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    No. Telp
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="no_telp">
+                                                        <%= data_user_by_uname[0].no_telp %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Bergabung sejak
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="join_since">
+                                                        <%= data_user_by_uname[0].createdAt %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row mb-2">
+                                                <div class="col-6">
+                                                    Status User
+                                                </div>
+                                                <div class="col-6">
+                                                    <span id="status_user">
+                                                        <%= data_user_by_uname[0].status_user %>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                                <div class="card-footer">
+                                    <div id="changeUser" style="float: right;">
+                                        <span>Ingin mengupdate data?</span> <button id="btnModalUpdate"
+                                            class="btn btn-outline-primary">Klik
+                                            disini</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </section>
+                        <!-- Basic Tables end -->
+
+                        <!-- Footer -->
+                        <%- include('../template/footer') %>
+                </div>
+        </div>
+
+        <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="modalUpdateLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalUpdateLabel">Update data</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-2" hidden>
+                                <label for="user_id" class="form-label">ID User</label>
+                                <input type="text" class="form-control" id="user_id_update"
+                                    value="<%= data_user_by_uname[0].user_id %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username_update"
+                                    value="<%= data_user_by_uname[0].username %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="nama_user" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="nama_user_update"
+                                    value="<%= data_user_by_uname[0].nama_user %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="email" class="form-label">Email Anda</label>
+                                <input type="email" class="form-control" id="email_update"
+                                    value="<%= data_user_by_uname[0].email %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="no_telp" class="form-label">No. Telp</label>
+                                <input type="text" class="form-control" id="no_telp_update"
+                                    value="<%= data_user_by_uname[0].no_telp %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password_update"
+                                    value="<%= data_user_by_uname[0].password %>">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="status_user" class="form-label">Status User</label>
+                                <select class="form-select" id="status_user_update">
+                                    <% if(data_user_by_uname[0].status_user=="Aktif" ) { %>
+                                        <option value="">- Pilih Status User -</option>
+                                        <option value="Aktif" selected>Aktif</option>
+                                        <option value="Tidak aktif">Tidak aktif</option>
+                                        <% } else if(data_user_by_uname[0].status_user=="Tidak aktif" ) {%>
+                                            <option value="">- Pilih Status User -</option>
+                                            <option value="Aktif">Aktif</option>
+                                            <option value="Tidak aktif" selected>Tidak aktif</option>
+                                            <%} else if(data_user_by_uname[0].status_user=="" ) {%>
+                                                <option value="" selected>- Pilih Status User -</option>
+                                                <option value="Aktif">Aktif</option>
+                                                <option value="Tidak aktif">Tidak aktif</option>
+                                                <% }%>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnSimpanUpdate">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JS -->
+        <%- include('../template/js') %>
+            <script>
+                $(document).ready(function () {
+
+                    $("#btnCopyLinkPage").on('click', function () {
+                        const link_page = $('#link_page').attr('href')
+                        navigator.clipboard.writeText(link_page)
+                        Swal.fire('Berhasil', 'Link Page berhasil disalin pada clipboard.', 'success');
+                    })
+
+                    $("#btnModalUpdate").on('click', function () {
+                        $("#modalUpdate").modal("show")
+                    });
+
+                    $("#btnSimpanUpdate").on('click', function () {
+                        const dataUser = {
+                            user_id: $("#user_id_update").val(),
+                            nama_user: $("#nama_user_update").val(),
+                            password: $("#password_update").val(),
+                            status_user: $("#status_user_update").val()
+                        }
+                        console.log(dataUser);
+                        if (Object.values(dataUser).every(val => val !== null && val !== undefined && val !== "")) {
+                            axios({
+                                method: 'post', url: '/admin/user/doUpdateUser', data: {
+                                    dataUser
+                                }
+                            }).then((responseUpdate) => {
+                                if (responseUpdate.data.statusUpdate == "OK") {
+                                    $("#modalUpdate").modal('hide')
+                                    let timerInterval
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'Data telah berhasil diupdate.',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: true,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval)
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            location.reload()
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+                        }
+                    })
+
+                });
+            </script>
+    </body>
+
+    </html>

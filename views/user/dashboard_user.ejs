@@ -1,0 +1,92 @@
+<%- include('../template/head') %>
+    <style>
+        .page {
+            cursor: pointer;
+        }
+
+        #judulPage {
+            float: right;
+        }
+    </style>
+    <%- include('../template/header_dashboard') %>
+
+    <div class="d-flex gap">
+        <!--Sidebar-->
+        <%- include('../template/sidebar') %>
+
+        <!--Content-->
+        <div class="container mt-3">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+            </nav>
+
+            <div id="nama_user">
+                Hi, <span class="fw-bolder">
+                            <%= user.nama_user %>
+                        </span>
+            </div>
+            <div class="row p-2">
+                <div class="col-lg-4 p-1">
+                    <div class="card page shadow">
+                        <div class="card-header d-flex justify-content-start bg-info text-white">
+                            <span id="judulPage">Saweran Masuk</span>
+                        </div>
+                        <div class="card-body">
+                                    <span id="keteranganPage">
+                                        Lihat histori saweran yang masuk disini.
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 p-1">
+                    <div class="card page shadow">
+                        <div class="card-header d-flex justify-content-start bg-info text-white">
+                            <span id="judulPage">Saweran Keluar</span>
+                        </div>
+                        <div class="card-body">
+                                    <span id="keteranganPage">
+                                        Lihat histori saweran yang kamu kirimkan.
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 p-1">
+                    <div class="card page shadow">
+                        <div class="card-header d-flex justify-content-start bg-info text-white">
+                            <span id="judulPage">Dompet</span>
+                        </div>
+                        <div class="card-body">
+                                    <span id="keteranganPage">
+                                        Lihat histori saldo atau penarikan saldo disini.
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%- include('../template/footer_dashboard') %>
+        </div>
+    </div>
+
+    <%- include('../template/js') %>
+    <script>
+        $(document).ready(function () {
+            const page = $('.page')
+            page.on('click', function () {
+                //
+                const judulPage = $(this).find('#judulPage').text();
+
+                if (judulPage == "Saweran Masuk") {
+                    window.location.href = "/user/saweran/masuk"
+                }
+                else if (judulPage == "Saweran Keluar") {
+                    window.location.href = "/user/saweran/keluar"
+                }
+                else if (judulPage == "Dompet") {
+                    window.location.href = "/user/dompet"
+                }
+            })
+        })
+    </script>

@@ -1,0 +1,250 @@
+<% if(locals.message && locals.message.info){ %>
+    <div class="flashMessage-info container" hidden>
+        <button class="" id="infoFlashMessage">
+            <%=message.info%>
+        </button>
+    </div>
+    <% } %>
+<div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#0dcaf0" fill-opacity="1" d="M0,192L120,192C240,192,480,192,720,170.7C960,149,1200,107,1320,85.3L1440,64L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path></svg>
+</div>
+<div class="bg-primer">
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-5">
+            <p class="col-md-4 mb-0 text-white">&copy; 2024 Company, Inc</p>
+
+            <a href="/"
+               class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap" />
+                </svg>
+            </a>
+
+            <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-white">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link px-2 text-white">About</a></li>
+                <li class="nav-item"><a href="#features" class="nav-link px-2 text-white">Features</a></li>
+                <li class="nav-item"><a href="#faqs" class="nav-link px-2 text-white">FAQs</a></li>
+            </ul>
+        </footer>
+        </div>
+
+        <!-- Modal Login-->
+        <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalLoginLabel">Login</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <label for="username_login" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username_login" value="">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="password_login" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password_login" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primer" id="btnLogin">Log in</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Register -->
+        <div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="modalRegisterLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalRegisterLabel">Register</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <label for="username_register" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username_register" value="">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="nama_user" class="form-label">Nama Anda</label>
+                                <input type="text" class="form-control" id="nama_user_register" value="">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="email" class="form-label">Email Anda</label>
+                                <input type="email" class="form-control" id="email_register" value="">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="no_telp" class="form-label">No. Telp</label>
+                                <input type="text" class="form-control" id="no_telp_register" value="">
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <label for="password_register" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password_register" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primer" id="btnRegister">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+        </body>
+        <script>
+            $(document).ready(function () {
+                // $("#modalRegister").modal('show')
+
+                const btnFlashMessage = $('#infoFlashMessage')
+
+                btnFlashMessage.on('click', function () {
+
+                    Swal.fire('Info', '' + $(this).text(), 'info');
+                })
+
+                btnFlashMessage.click()
+
+                const btnLogoutUser = $("#btnLogoutUser")
+                btnLogoutUser.on('click', function () {
+                    axios({
+                        method: 'post', url: '/auth/logoutUser'
+                    }).then((responseLogoutUser) => {
+                        if (responseLogoutUser.data.statusLogoutUser == "OK") {
+                            location.reload()
+                        }
+                        else if (responseLogoutUser.data.statusLogoutUser == "Gagal") {
+                            Swal.fire('Gagal', 'Maaf, Logout gagal, Silahkan hubungi CS.', 'info');
+                        }
+                    })
+                })
+
+                const btnRegister = $("#btnRegister")
+                btnRegister.on('click', function () {
+                    $(this).prop('disabled', true);
+
+                    const username_register = $('#username_register')
+                    const nama_user = $('#nama_user_register')
+                    const email = $('#email_register')
+                    const no_telp = $('#no_telp_register')
+                    const password_register = $("#password_register")
+
+                    const dataRegister = {
+                        nama_user: nama_user.val(),
+                        username: username_register.val(),
+                        email: email.val(),
+                        no_telp: no_telp.val(),
+                        password: password_register.val()
+                    }
+
+
+                    if (Object.values(dataRegister).every(val => val !== null && val !== undefined && val !== "")) {
+                        $(this).prop('disabled', false);
+                        axios({
+                            method: 'post', url: '/auth/doRegisterUser', data: {
+                                dataRegister
+                            }
+                        }).then((responseRegister) => {
+                            username_register.removeClass("is-invalid");
+                            nama_user.removeClass("is-invalid");
+                            email.removeClass("is-invalid");
+                            no_telp.removeClass("is-invalid");
+                            password_register.removeClass("is-invalid");
+
+                            if (responseRegister.data.statusRegister == "OK") {
+                                Swal.fire('Berhasil', 'Register Berhasil, Selamat datang, Silahkan Login.', 'success');
+                                $("#modalRegister").modal('hide')
+                                username_register.val('');
+                                nama_user.val('');
+                                email.val('');
+                                no_telp.val('');
+                                password_register.val('');
+
+                                username_register.removeClass("is-invalid");
+                                nama_user.removeClass("is-invalid");
+                                email.removeClass("is-invalid");
+                                no_telp.removeClass("is-invalid");
+                                password_register.removeClass("is-invalid");
+                            }
+                            else if (responseRegister.data.statusRegister == "Username sudah Terdaftar") {
+                                username_register.addClass("is-invalid");
+                                isValid = false;
+                                Swal.fire('Oops..', 'Maaf, Username sudah Terdaftar, Silahkan coba yang lain ya.', 'info');
+                            }
+                            else if (responseRegister.data.statusRegister == "Email sudah Terdaftar") {
+                                email.addClass("is-invalid");
+                                Swal.fire('Oops..', 'Maaf, Email sudah Terdaftar, Silahkan coba yang lain ya.', 'info');
+                            }
+                            else if (responseRegister.data.statusRegister == "No. Telp sudah Terdaftar") {
+                                no_telp.addClass("is-invalid");
+                                Swal.fire('Oops..', 'Maaf, No. Telp sudah Terdaftar, Silahkan coba yang lain ya.', 'info');
+                            } else {
+                                Swal.fire('Oops..', 'Maaf, Sepertinya ada Kesalahan, Silahkan Hubungi CS ya..', 'info');
+                            }
+                        })
+                    }
+                    else {
+                        $(this).prop('disabled', false);
+                        Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+                    }
+
+
+
+                });
+
+                const btnLogin = $("#btnLogin")
+                btnLogin.on('click', function () {
+                    $(this).prop('disabled', true);
+                    const username_login = $('#username_login')
+                    const password_login = $("#password_login")
+
+                    const dataLogin = {
+                        username: username_login.val(),
+                        password: password_login.val()
+                    }
+                    if (Object.values(dataLogin).every(val => val !== null && val !== undefined && val !== "")) {
+                        $(this).prop('disabled', false);
+                        axios({
+                            method: 'post', url: '/auth/doLoginUser', data: {
+                                dataLogin
+                            }
+                        }).then((responseLogin) => {
+                            if (responseLogin.data.statusLogin == "OK") {
+                                const getURL = document.URL.split('/')
+                                if (getURL[3].replace("#", "") == "") {
+                                    window.location.href = "/user/dashboard"
+                                }
+                                else {
+                                    location.reload()
+                                }
+                            }
+                            else if (responseLogin.data.statusLogin == "User tidak Aktif") {
+                                username_login.val('')
+                                password_login.val('')
+                                Swal.fire('Gagal', 'Maaf, User tidak Aktif, Silahkan hubungi CS.', 'info');
+                            }
+                            else {
+                                username_login.val('')
+                                password_login.val('')
+                                Swal.fire('Gagal', 'Maaf, Username / Passsword tidak Benar.', 'warning');
+                            }
+                        })
+                    }
+                    else {
+                        $(this).prop('disabled', false);
+                        Swal.fire('Gagal', 'Maaf, Silahkan isi semua data dahulu.', 'info');
+                    }
+                })
+            })
+        </script>
+
+        </html>
